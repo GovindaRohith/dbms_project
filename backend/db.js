@@ -3,7 +3,7 @@ const conn = mysql.createConnection({
   host: 'localhost',
   user: 'root',
   password: 'password',
-  database: 'sample'
+  database: 'cqadb',
 });
 
 
