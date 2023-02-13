@@ -40,6 +40,8 @@ build/Release
 # Dependency directories
 node_modules/
 jspm_packages/
+CSV_Views/
+CQA_Web/
 
 # TypeScript v1 declaration files
 typings/

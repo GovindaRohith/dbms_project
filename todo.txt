@@ -1,0 +1,9 @@
+Database Part:
+
+Create a database named cqadb
+create constraints -->Foreign key on delete set cascde
+Extra numeric constraints like >=0 <0 
+
+
+Website Part:
+*Signup page 
