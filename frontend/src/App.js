@@ -1,24 +1,28 @@
-import logo from './logo.svg';
 import './App.css';
-
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Link
+} from "react-router-dom";
+import Login from './components/Login';
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      <Router>
+      <Routes>
+      <Route path="/" element={<Login/>}/>
+
+
+
+      {/* These comments show how to routing using params dont delete them*/}
+      {/* <Route path="/student" element={<Studentdash/>}/> */}
+      {/* <Route path="/student/subtopic/:topicid/:subtopicid/:subtopicname" element={<Topic/>}/> */}
+      {/* <Route path="/student/subtopic/:topicid/:subtopicid/:subtopicname" element={<Topic/>}/> */}
+      {/* <Route path="/faculty" element={<Facultydash/>}/> */}
+      {/* <Route path="/faculty/mycourses/:topicid/:subtopicid/:subtopicname" element={<Mycourse/>}/> */}
+      {/* <Route path="/admin" element={<Admindash />}/> */}
+      </Routes>
+    </Router>
   );
 }
 
