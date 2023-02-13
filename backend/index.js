@@ -25,8 +25,8 @@ app.get('/',(req, res)=>{
 app.post('/',(req, res)=>{
   res.send("This is home page")
 })
-const route1=require("./route1.js")
-const route2=require("./route2.js")
+const route1=require("./src/route1.js")
+const route2=require("./src/route2.js")
 app.use('/route1',route1)
 app.use('/route2',route2)
 
