@@ -24,7 +24,11 @@ const [is_stored,setis_stored]=useState(false);
 useEffect(() => {
   const tempo=cookies.username;
   if(tempo===undefined) console.log("No cookies found")
-  else navigate("/homepage")
+  else
+  {
+    navigate("/homepage")
+    // alert("Session restored")
+  } 
 }, [])
 
 const forgot_up=()=>{

@@ -5,15 +5,6 @@ const conn=require('./db')
 
 var str;
 
-router.get('/', (req, res)=>
-{
-    // str="insert into users values('Name');"
-    str="select * from users;"
-    conn.query(str, (err, rows, fields) => {
-      if (err) throw err
-      res.send(rows)
-    })
-})
 
 router.post('/', (req,res)=>
 {

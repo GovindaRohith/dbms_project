@@ -26,9 +26,9 @@ app.post('/',(req, res)=>{
   res.send("This is home page")
 })
 const route1=require("./src/login.js")
-const route2=require("./src/route2.js")
+const route2=require("./src/tag.js")
 app.use('/login',route1)
-app.use('/route2',route2)
+app.use('/tag',route2)
 
 app.listen(port, () => {
   console.log(`Example app listening on port http://localhost:${port}/`)
