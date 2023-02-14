@@ -13,7 +13,7 @@
 --reputation calculated as (upvotes-downvotes)*10
 CREATE TABLE users (
 	account_id INTEGER AUTO_INCREMENT PRIMARY KEY,
-	reputation INTEGER ,
+	reputation INTEGER DEFAULT 0,
 	views INTEGER DEFAULT 0,
 	down_votes INTEGER DEFAULT 0,
 	up_votes INTEGER DEFAULT 0,

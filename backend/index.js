@@ -25,9 +25,9 @@ app.get('/',(req, res)=>{
 app.post('/',(req, res)=>{
   res.send("This is home page")
 })
-const route1=require("./src/route1.js")
+const route1=require("./src/login.js")
 const route2=require("./src/route2.js")
-app.use('/route1',route1)
+app.use('/login',route1)
 app.use('/route2',route2)
 
 app.listen(port, () => {

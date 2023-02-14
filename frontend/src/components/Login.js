@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-// import axios from './axios';
+import axios from './axios';
 import {
   BrowserRouter as Router,
   Routes,
@@ -10,6 +10,27 @@ import {
 
 
 export default function Login() { 
+const [inp,setinp]=useState("");
+const [pass,setpass]=useState("");
+const [logininp,setlogininp]=useState("");
+const [loginpass,setloginpass]=useState("");
+const [forgot_name,setforgot_name]=useState("");
+const [forgot_error,setforgot_error]=useState("");
+const forgot_up=()=>{
+  axios.put("/login", {
+    name:forgot_name,
+  })
+  .then((resp) =>{
+    setforgot_error("");
+    window.location.reload(false);
+    alert("Password Updated Successfully!!!!!");
+  })
+  .catch(function (error) {
+    setforgot_error("User name doesnot exists");
+  });
+  //setforgot_error
+}
+
 const forgot=()=>{
   return (
     <>
@@ -17,98 +38,106 @@ const forgot=()=>{
   Forgot Password?
 </Link>
 
-<div className="modal fade" id="staticBackdrop2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div className="modal fade" id="staticBackdrop2" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div className="modal-dialog">
     <div className="modal-content">
       <div className="modal-header">
         <h1 className="modal-title fs-5" id="staticBackdropLabel">Forgot Password?</h1>
-        <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" ></button>
       </div>
       <div className="modal-body">
+    <input type="email" className="form-control" id="exampleFormControlInput1" placeholder="Username" onChange={(e)=>{setforgot_name(e.target.value)}}/>
         Your password be changed to username on clicking agree!!
+        <br/>
+        {forgot_error}
       </div>
       <div className="modal-footer">
         <button type="button" className="btn btn-outline-danger" data-bs-dismiss="modal">Dissmiss</button>
-        <button type="button" className="btn btn-outline-primary">Agree</button>
+        <button type="button" className="btn btn-outline-primary" onClick={forgot_up}>Agree</button>
       </div>
     </div>
   </div>
 </div>
     </>
   );
+}
+
+const signer= ()=>{
+  axios.post("/login", {
+    name:inp,
+    password:pass,
+  })
+  .then((resp) =>{
+      alert("Account created successfully!!")
+    // console.log(resp.statusCode);
+    window.location.reload(false);
+  })
+  .catch(function (error) {
+    alert("User name already exists try with another user name!!!")
+  });
+}
+
+const logger=()=>{
+  axios.post("/login/signin" ,{
+      user:logininp,
+      password:loginpass,
+  })
+  .then((resp)=>{
+    alert("Login Sucessfull");
+  })
+    .catch(function (error) {
+    alert("User name or password incorrect")
+  });
 }
 
 const sign_up=()=>{
   return(
     <>
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop1">
-  Signup
-</button>
+    <br/>
+    <br/>
+    <br/>
 
-<div class="modal fade" id="staticBackdrop1" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="staticBackdropLabel">Signup</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        
-        {/* //signup content */}
-        <div className="mb-3 row">
-    <label for="staticEmail" className="col-sm-2 col-form-label">Username</label>
+    Signup Section here
+         <br/>
+    <br/>
+    <div className="mb-3 row">
+    <label htmlFor="staticEmail" className="col-sm-2 col-form-label">Username</label>
     <div className="col-sm-10">
-    <input type="email" className="form-control" id="exampleFormControlInput1" placeholder="Username" onChange={(e)=>{setinp({...inp,names:e.target.value})}}/>
+    <input type="email" className="form-control" id="exampleFormControlInput1" placeholder="Username" onChange={(e)=>{setinp(e.target.value)}}/>
     </div>
   </div>
   <div className="mb-3 row">
-    <label for="inputPassword" className="col-sm-2 col-form-label" onChange={(e)=>{setinp({...inp,password:e.target.value})}}>Password</label>
+    <label htmlFor="inputPassword" className="col-sm-2 col-form-label" >Password</label>
     <div className="col-sm-10">
-      <input type="password" className="form-control" id="inputPassword" placeholder='Password'/>
+      <input type="password" className="form-control" id="inputPassword" onChange={(e)=>{setpass(e.target.value)}} placeholder='Password'/>
     </div>
   </div>
-
-        {/* //signup content */}
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Dismiss</button>
-        <button type="button" class="btn btn-primary">Signup</button>
-      </div>
-    </div>
-  </div>
-</div>
+  <button type="button" className="btn btn-outline-success" onClick={signer}>Signup</button>
     </>
   );
 }
-    const [inp,setinp]=useState(
-        {
-          names:"",
-          password:""
-        }
-      )
+
       return (
           <>
             <div className="mb-3 row">
-    <label for="staticEmail" className="col-sm-2 col-form-label">Username</label>
+    <label htmlFor="staticEmail" className="col-sm-2 col-form-label">Username</label>
     <div className="col-sm-10">
-    <input type="email" className="form-control" id="exampleFormControlInput1" placeholder="Username" onChange={(e)=>{setinp({...inp,names:e.target.value})}}/>
+    <input type="email" className="form-control" id="exampleFormControlInput1" placeholder="Username" onChange={(e)=>{setlogininp(e.target.value)}}/>
     </div>
   </div>
   <div className="mb-3 row">
-    <label for="inputPassword" className="col-sm-2 col-form-label" onChange={(e)=>{setinp({...inp,password:e.target.value})}}>Password</label>
+    <label htmlFor="inputPassword" className="col-sm-2 col-form-label" >Password</label>
     <div className="col-sm-10">
-      <input type="password" className="form-control" id="inputPassword" placeholder='Password'/>
+      <input type="password" className="form-control" id="inputPassword" onChange={(e)=>{setloginpass(e.target.value)}} placeholder='Password'/>
     </div>
   </div>
 
-
-  <button type="button" className="btn btn-outline-success">Login</button>
+  <button type="button" className="btn btn-outline-success" onClick={logger} >Login</button>
   
-  {sign_up()}
   
   <div className="form-check">
   <input className="form-check-input" type="checkbox" value="" id="flexCheckDefault"/>
-  <label className="form-check-label" for="flexCheckDefault">
+  <label className="form-check-label" htmlFor="flexCheckDefault">
     Remember me!!
   </label>
 </div>
@@ -116,6 +145,9 @@ const sign_up=()=>{
 {/* className="btn btn-primary" */}
 
 {forgot()}
+
+  {sign_up()}
+
           </>
       )
   }
