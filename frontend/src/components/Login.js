@@ -5,9 +5,11 @@ import {
   Routes,
   Route,
   Link,
-  useNavigate
+  useNavigate,
+  Navigate
 } from "react-router-dom";
-
+import { useCookies } from 'react-cookie';
+import Cookies from 'js-cookie';
 
 export default function Login() { 
 const [inp,setinp]=useState("");
@@ -16,6 +18,15 @@ const [logininp,setlogininp]=useState("");
 const [loginpass,setloginpass]=useState("");
 const [forgot_name,setforgot_name]=useState("");
 const [forgot_error,setforgot_error]=useState("");
+const [cookies, setCookie] = useCookies(['name']);
+const [is_stored,setis_stored]=useState(false);
+
+useEffect(() => {
+  const tempo=cookies.username;
+  if(tempo===undefined) console.log("No cookies found")
+  else navigate("/homepage")
+}, [])
+
 const forgot_up=()=>{
   axios.put("/login", {
     name:forgot_name,
@@ -83,9 +94,16 @@ const logger=()=>{
       password:loginpass,
   })
   .then((resp)=>{
-    alert("Login Sucessfull");
+    console.log(is_stored)
+    setCookie('username', logininp, { path: '/' });
+    if(is_stored===true)  localStorage.setItem("is_stored",1);
+    else localStorage.setItem("is_stored",0);
+    navigate("/homepage")
+    // localStorage.setItem("username:", logininp);
+    // console.log(localStorage.getItem("username:"));
   })
     .catch(function (error) {
+      // console.log(error)
     alert("User name or password incorrect")
   });
 }
@@ -116,8 +134,9 @@ const sign_up=()=>{
     </>
   );
 }
+const navigate = useNavigate();
 
-      return (
+  return (
           <>
             <div className="mb-3 row">
     <label htmlFor="staticEmail" className="col-sm-2 col-form-label">Username</label>
@@ -136,7 +155,7 @@ const sign_up=()=>{
   
   
   <div className="form-check">
-  <input className="form-check-input" type="checkbox" value="" id="flexCheckDefault"/>
+  <input className="form-check-input" type="checkbox" checked={is_stored}  onChange={()=>{setis_stored(!is_stored)}} id="flexCheckDefault"/>
   <label className="form-check-label" htmlFor="flexCheckDefault">
     Remember me!!
   </label>
