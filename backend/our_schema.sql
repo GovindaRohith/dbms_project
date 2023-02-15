@@ -90,8 +90,8 @@ CREATE TABLE tag_posts (
 
 -- Tags
 CREATE TABLE tags (
-   tag_id INTEGER AUTO_INCREMENT PRIMARY KEY,
-   tag_name VARCHAR(255) NOT NULL,
+   tag_id INTEGER AUTO_INCREMENT UNIQUE,
+   tag_name VARCHAR(255) PRIMARY KEY,
    tag_count INTEGER DEFAULT 0
 );
 
