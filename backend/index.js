@@ -27,8 +27,10 @@ app.post('/',(req, res)=>{
 })
 const route1=require("./src/login.js")
 const route2=require("./src/tag.js")
+const profile=require("./src/profile.js")
 app.use('/login',route1)
 app.use('/tag',route2)
+app.use('/profile',profile)
 
 app.listen(port, () => {
   console.log(`Example app listening on port http://localhost:${port}/`)

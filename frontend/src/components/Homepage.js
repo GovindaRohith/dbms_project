@@ -11,6 +11,7 @@ import {
 } from "react-router-dom";
 import { useCookies } from 'react-cookie';
 import Cookies from 'js-cookie';
+import Navbar from './Navbar';
 
 export default function Homepage(){
     const navigate = useNavigate();
@@ -20,14 +21,14 @@ const [user,setuser]=useState("")
         setuser(()=>{
             const tempo=cookies.username;
             console.log(tempo);
-            if(tempo.length===0) navigate("/");
+            if(tempo===undefined) navigate("/");
             return tempo;
         })
 },[])
 return(
     <>
-    Home page
-    {user}
+    <Navbar/>
+    
     </>
 );
 

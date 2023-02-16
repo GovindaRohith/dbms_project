@@ -136,4 +136,7 @@ WHERE E.post_id=C.post_id and post_type_id=1;
 
 
 
+./stackexchange-xml-converter -result-format=csv -source-path=/home/rohith/Desktop/Sem4Mat/DBMS/As2/CQA_Web/softwareengineering.stackexchange.com/Tags.xml -store-to-dir=/home/rohith/Desktop/Sem4Mat/DBMS/As2/CSV_Views
+
+
    
