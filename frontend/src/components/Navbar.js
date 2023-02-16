@@ -19,12 +19,25 @@ function Navbar() {
         Cookies.remove('username', { path: '/' });
     }
     useEffect(() => {
-      window.addEventListener("beforeunload", (ev) => 
-    {  
-//remove cookies based on remembe me !!!!
-      ev.preventDefault();
-    return ev.returnValue = 'Are you sure you want to close?';
-    });
+        window.addEventListener("beforeunload", (ev) => 
+        {
+          var temp=localStorage.getItem("is_stored");
+          console.log(temp)
+          if(temp==1)
+          {
+            console.log("Keep cookies here")
+          }
+          else
+          {
+            // console.log(ev)  
+            // ev.preventDefault();
+            // return ev.returnValue = 'Hello';
+            console.log("Remove cookies here");
+            Cookies.remove('username', { path: '/' });;
+            // localStorage.removeItem("is_stored")
+          }
+          
+        });
     }, [])
 
   return (
