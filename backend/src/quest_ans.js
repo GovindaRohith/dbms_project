@@ -47,7 +47,8 @@ if (pti[0].post_type_id == 1) {
                     var Result1 = result1
                     Result[0]=Result1;
                     var sql3 = "select p.owner_display_name,p.last_editor_display_name,p.last_edit_date,p.is_accepted_answer,p.post_id,p.up_vote,p.down_vote,p.score,p.views,p.acc_ans_count,p.comment_count,p.post_title,p.body_text,p.creation_date,p.closed_date from posts as p where p.parent_id=?;";
-                    con.query(sql3, [p_id], async function (error3, result3, fields3) {                          
+                    con.query(sql3, [p_id], async function (error3, result3, fields3) {  
+                        console.log(result3);                        
                         for(let i=0;i<result3.length;i++)
                         {
                             var rarray = await new Promise(function(resolve, reject) {
@@ -192,13 +193,15 @@ router.post('/', (req, res) => {
 })
 
 ///edit answer
-router.put('/:vw',(req,res)=>{
-    var l_e_d_n=req.params.vw;
+router.put('/',(req,res)=>{
+    console.log(req.body)
+    var l_e_d_n=req.body.owner_display_name;
     var p_t=req.body.post_title;
     var b_t=req.body.body_text;
     var p_id=req.body.post_id;
-    var sql="UPDATE posts SET last_editor_display_name =?,last_edit_date=now(),post_title=?,body_text=? WHERE post_id=?;";
-    con.query(sql,[l_e_d_n,p_t,b_t,p_id],function(error,result){
+    var parent_id=req.body.parent_id;
+    var sql="UPDATE posts SET last_editor_display_name =(?),last_edit_date=now(),post_title=(?),body_text=(?) WHERE post_id=(?);UPDATE posts SET last_editor_display_name =(?),last_edit_date=now() WHERE post_id=(?);";
+    con.query(sql,[l_e_d_n,p_t,b_t,p_id,l_e_d_n,parent_id],function(error,result){
         if(error) throw error;
     })
 })
@@ -224,16 +227,17 @@ router.post('/addans',(req,res)=>{
 });
 
 //accepted answer
-router.post('/',(req,res)=>{
+router.post('/acc_ans',(req,res)=>{
     var p_id=req.body.post_id;
+    console.log(p_id);
     var o_d_n=req.body.owner_display_name;
-    var i_a_a=req.body.is_accepted_answer;
     var parent_id=req.body.parent_id;
-    con.query("UPDATE posts SET last_editor_display_name=?,last_edit_date=now(),is_accepted_answer=? WHERE post_id=?;",[o_d_n,i_a_a,p_id],function(error,result){
-
+    console.log(parent_id);
+    con.query("UPDATE posts SET last_editor_display_name=?,last_edit_date=now(),is_accepted_answer=true WHERE post_id=?;",[o_d_n,p_id],function(error,result){
+        if(error)throw error;
     })
     con.query("UPDATE posts SET  last_editor_display_name=?,last_edit_date=now(),acc_ans_count= acc_ans_count+1 WHERE post_id=?;",[o_d_n,parent_id],function(error,result){
-
+        if(error)throw error;
     })
 })
 

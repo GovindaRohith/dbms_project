@@ -50,6 +50,7 @@ function Quest_Ans() {
     axios.get("/quest_ans/"+postid+"/"+cookies.username)
          .then((response) => {
             var arr=[]
+            console.log(response.data[1])
             arr.push(...response.data[0])
             for(var i=0;i<response.data[1].length;i++)
             {
@@ -145,8 +146,9 @@ function Quest_Ans() {
     ],
   }
   )
+
   const quest_is_edit=(name)=>{
-    if(name=="Owner main from cookies")
+    if(name==cookies.username)
     {
       return(
         <>
@@ -187,7 +189,7 @@ function Quest_Ans() {
   }
   const profile_director=(name)=>
   {
-    if(name=="Owner name from cookies")
+    if(name==cookies.username)
     {
       return (
         <>
@@ -206,9 +208,16 @@ function Quest_Ans() {
       )
     }
   }
+  const ans_edit_axi=(index)=>{
+    axios.put("/quest_ans",{owner_display_name:cookies.username,post_title:editans.post_title,body_text:editans.body_text,post_id:editans.post_id,parent_id:dat[0].post_id})
+        .then(response=>{
+          console.log(response);
+        })
+    window.location.reload(false);
+  }
   const ans_edit=(index)=>
   {
-  if(dat[index].owner_display_name=="Owner main from cookies")
+  if(dat[index].owner_display_name==cookies.username)
     {
       return(
         <>
@@ -227,14 +236,14 @@ function Quest_Ans() {
       <div className="input-group">
   <span className="input-group-text">Headline</span>
   <textarea className="form-control" value={editans.post_title}  aria-label="With textarea" placeholder={dat[index].post_title} onChange={(e)=>{
-  seteditans({...editans,post_title:e.target.value})    
+  seteditans({...editans,post_title:e.target.value,post_id:dat[index].post_id})    
   }}/>
     
 </div>
       <div className="input-group">
   <span className="input-group-text">Your answer</span>
   <textarea className="form-control" value={editans.body_text}  aria-label="With textarea" placeholder={dat[index].body_text} onChange={(e)=>{
-  seteditans({...editans,body_text:e.target.value})    
+  seteditans({...editans,body_text:e.target.value,post_id:dat[index].post_id})    
   }}/>
     
 </div>
@@ -245,8 +254,9 @@ function Quest_Ans() {
           seteditans({...dat[index],body_text:editans.body_text,post_title:editans.post_title});
           var tempo=dat;
           tempo[index]={...editans}
-          tempo=[...tempo,tempo[index]]
+          // tempo=[...tempo,tempo[index]]
           setdat([...tempo])
+          ans_edit_axi(index)
         }}>Edit Answer!!!</button>
       </div>
     </div>
@@ -263,11 +273,56 @@ function Quest_Ans() {
       )
     }
   }
+  const acc_ans_axi=(index)=>{
+    axios.post("/quest_ans/acc_ans",{post_id:dat[index].post_id,owner_display_name:dat[0].owner_display_name,parent_id:dat[0].post_id})
+    .then(response=>{
+        console.log(response)
+    })
+    window.location.reload(false);  
+  }
   const accept_this=(index)=>{
     if(dat[0].owner_display_name==cookies.username)
     {
-      
+      if(dat[index].is_accepted_answer==true)
+      {
+
+      }
+      else 
+      {
+        return(<>
+        <button type="button" className="btn btn-outline-success" onClick={()=>{
+          var kole=dat;
+          kole[index].is_accepted_answer=true;
+          setdat([...kole])
+          // console.log(dat)
+          acc_ans_axi(index)
+        }}>Accept this answer</button>        
+        </>)
+      }
     }
+    return (<></>)
+  }
+  const timegetter=(p_date)=>{
+  const now = new Date(p_date);
+  const nowTimezoneOffset = now.getTimezoneOffset();
+  const givenOffset = -5.5 * 60*60; // Convert 5:30 hours to minutes
+  const originalNowTime = new Date(now.getTime() + (nowTimezoneOffset * 60 * 1000) - (givenOffset * 1000));
+  const options = {
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour12: true,
+    // timeZone: 'UTC'
+  };
+  const formattedDate = originalNowTime.toLocaleString('en-US', options);
+    return(
+      <>
+      {formattedDate}
+      </>
+    )
   }
   //card-text btn btn-primary
   //disabled card-text btn btn-primary
@@ -353,8 +408,8 @@ function Quest_Ans() {
    Downvote<span className="badge text-bg-secondary">{each.down_vote}</span>
 </button>
 
-<p className="card-text"><small className="text-muted">Posted by : {profile_director(each.owner_display_name)} here when click on name if same as user goto edit profile else variant of profile ::::: {each.creation_date}</small></p>
-    <p className="card-text"><small className="text-muted">Last edited by : {profile_director(each.last_editor_display_name)} on ::: {each.last_edit_date}</small></p>
+<p className="card-text"><small className="text-muted">Posted by : {profile_director(each.owner_display_name)} here when click on name if same as user goto edit profile else variant of profile ::::: {timegetter(each.creation_date)}</small></p>
+    <p className="card-text"><small className="text-muted">Last edited by : {profile_director(each.last_editor_display_name)} on ::: {timegetter(each.last_edit_date)}</small></p>
     <p className="card-text"><small className="text-muted">views: {each.views}</small></p>
     <p className="card-text"><small className="text-muted">score: {each.score}</small></p>
     <p className="card-text"><small className="text-muted">Accepted answers:{each.acc_ans_count}</small></p>
@@ -421,6 +476,7 @@ function Quest_Ans() {
       Answer:{index+1}
         <div className="card mb-3">
     <div className="card-body">
+
     <h5 className="card-title">{each.post_title}</h5>
     <p className="card-text">{each.body_text}</p>
     {ans_edit(index)}
@@ -497,8 +553,8 @@ function Quest_Ans() {
 }}>
    Downvote<span className="badge text-bg-secondary">{each.down_vote}</span>
 </button>
-    <p className="card-text"><small className="text-muted">Posted by : {profile_director(each.owner_display_name)} here when click on name if same as user goto edit profile else variant of profile ::::: {each.creation_date}</small></p>
-    <p className="card-text"><small className="text-muted">Last edited by : <Link to="#" >{each.last_editor_display_name}</Link> on ::: {each.last_edit_date}</small></p>
+    <p className="card-text"><small className="text-muted">Posted by : {profile_director(each.owner_display_name)} here when click on name if same as user goto edit profile else variant of profile ::::: {timegetter(each.creation_date)} </small></p>
+    <p className="card-text"><small className="text-muted">Last edited by : <Link to="#" >{each.last_editor_display_name}</Link> on ::: {timegetter(each.last_edit_date)}</small></p>
     <p className="card-text"><small className="text-muted">is accepted: {acceptor(each.is_accepted_answer)}</small></p>
     <p className="card-text"><small className="text-muted">views: {each.views}</small></p>
     <p className="card-text"><small className="text-muted">score: {each.score}</small></p>

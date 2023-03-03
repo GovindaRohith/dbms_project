@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from './axios';
+import './Login.css';
 import {
   BrowserRouter as Router,
   Routes,
@@ -10,7 +11,6 @@ import {
 } from "react-router-dom";
 import { useCookies } from 'react-cookie';
 import Cookies from 'js-cookie';
-
 export default function Login() { 
 const [inp,setinp]=useState("");
 const [pass,setpass]=useState("");
@@ -20,7 +20,7 @@ const [forgot_name,setforgot_name]=useState("");
 const [forgot_error,setforgot_error]=useState("");
 const [cookies, setCookie] = useCookies(['name']);
 const [is_stored,setis_stored]=useState(false);
-
+const [logrend,setlogrend]=useState("Redd")
 useEffect(() => {
   const tempo=cookies.username;
   if(tempo===undefined) console.log("No cookies found")
@@ -29,7 +29,13 @@ useEffect(() => {
     navigate("/homepage")
     // alert("Session restored")
   } 
-}, [])
+  document.querySelector('.img__btn').addEventListener('click', function() {
+    // console.log(document.querySelector('.cont'));
+    // console.log(document.querySelector('.cont'));
+    document.querySelector('.cont').classList.toggle('s--signup');
+});
+  setlogrend("Not rebd")
+}, [logrend])
 
 const forgot_up=()=>{
   axios.put("/login", {
@@ -41,7 +47,7 @@ const forgot_up=()=>{
     alert("Password Updated Successfully!!!!!");
   })
   .catch(function (error) {
-    setforgot_error("User name doesnot exists");
+    setforgot_error("User name does not exists");
   });
   //setforgot_error
 }
@@ -49,30 +55,33 @@ const forgot_up=()=>{
 const forgot=()=>{
   return (
     <>
-<Link to="#"type="button" className="link-primary"  data-bs-toggle="modal" data-bs-target="#staticBackdrop2">
-  Forgot Password?
-</Link>
 
-<div className="modal fade" id="staticBackdrop2" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <div className="modal-dialog">
-    <div className="modal-content">
-      <div className="modal-header">
-        <h1 className="modal-title fs-5" id="staticBackdropLabel">Forgot Password?</h1>
-        <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" ></button>
+    <p hidden>{logrend}</p>
+      <p className="text-center"><Link to="#"type="button"  className="text-center"     data-bs-toggle="modal" data-bs-target="#staticBackdrop2">
+          Forgot Password?
+        </Link></p>
+
+      <div className="modal fade" id="staticBackdrop2" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h1 className="modal-title fs-5" id="staticBackdropLabel">Forgot Password?</h1>
+              <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" ></button>
+            </div>
+            <div className="modal-body">
+          <input type="email" className="form-control" id="exampleFormControlInput1" placeholder="Username" onChange={(e)=>{setforgot_name(e.target.value)}}/>
+              Your password will be changed to username on clicking agree!!
+              <br/>
+              {forgot_error}
+            </div>
+            <div className="modal-footer">
+              {/* <button type="button" className="btn btn-outline-danger" data-bs-dismiss="modal">Dissmiss</button> */}
+              {/* <button type="button" className="submit" onClick={logger}>Sign In</button> */}
+              <button type="button" className="subbit" onClick={forgot_up}>Agree</button>
+            </div>
+          </div>
+        </div>
       </div>
-      <div className="modal-body">
-    <input type="email" className="form-control" id="exampleFormControlInput1" placeholder="Username" onChange={(e)=>{setforgot_name(e.target.value)}}/>
-        Your password be changed to username on clicking agree!!
-        <br/>
-        {forgot_error}
-      </div>
-      <div className="modal-footer">
-        <button type="button" className="btn btn-outline-danger" data-bs-dismiss="modal">Dissmiss</button>
-        <button type="button" className="btn btn-outline-primary" onClick={forgot_up}>Agree</button>
-      </div>
-    </div>
-  </div>
-</div>
     </>
   );
 }
@@ -112,42 +121,93 @@ const logger=()=>{
   });
 }
 
-const sign_up=()=>{
-  return(
-    <>
-    <br/>
-    <br/>
-    <br/>
-
-    Signup Section here
-         <br/>
-    <br/>
-    <div className="mb-3 row">
-    <label htmlFor="staticEmail" className="col-sm-2 col-form-label">Username</label>
-    <div className="col-sm-10">
-    <input type="email" className="form-control" id="exampleFormControlInput1" placeholder="Username" onChange={(e)=>{setinp(e.target.value)}}/>
-    </div>
-  </div>
-  <div className="mb-3 row">
-    <label htmlFor="inputPassword" className="col-sm-2 col-form-label" >Password</label>
-    <div className="col-sm-10">
-      <input type="password" className="form-control" id="inputPassword" onChange={(e)=>{setpass(e.target.value)}} placeholder='Password'/>
-    </div>
-  </div>
-  <button type="button" className="btn btn-outline-success" onClick={signer}>Signup</button>
-    </>
-  );
-}
 const navigate = useNavigate();
 
   return (
-          <>
-            <div className="mb-3 row">
+          <>   
+      <div className='qwerty' >
+      <br></br>
+      <br></br>
+      <br></br>
+      <br></br>
+      <div className="cont">
+          <div className="form sign-in">
+              <h2>Welcome to our CAQ Website!!!</h2>
+              <label>
+                  <span><strong>Username</strong></span>
+                  <input type="email" onChange={(e)=>{setlogininp(e.target.value)}}/>
+              </label>
+              <label>
+                  <span><strong>Password</strong></span>
+                  <input type="password" onChange={(e)=>{setloginpass(e.target.value)}}/>
+              </label>
+              {/* <div class="group">
+              <input className="forgot-pass" type="checkbox" checked={is_stored} onChange={()=>{setis_stored(!is_stored)}}></input>
+              <p className="forgot-pass"><strong>Remember me!!</strong></p>
+              </div> */}
+              <div className="row py-3">
+                <div className='col'>
+                    <p className="forgot-pass" hidden><strong>Remember me!!</strong></p>
+                </div>
+                <div className='col'>
+                  <input className="forgot-pass my-3" type="checkbox" checked={is_stored} onChange={()=>{setis_stored(!is_stored)}}></input>
+                </div>
+                <div className='col'>
+                  <p className="forgot-pass"><strong>Remember me!!</strong></p>
+                </div>
+                <div className='col'>
+                  <p className="forgot-pass" hidden><strong>Remember me!!</strong></p>
+                </div>
+              </div>
+                      
+              <button type="botton" className="subbit" onClick={logger}>Sign In</button>
+
+              {forgot()}    
+          </div>
+
+          <div className="sub-cont">
+              <div className="img">
+                  <div className="img__text m--up">
+                  
+                      <h3>Don't have an account? Please Sign up!</h3>
+                  </div>
+                  <div className="img__text m--in">
+                  
+                      <h3>If you already has an account, just sign in.</h3>
+                  </div>
+                  <div className="img__btn">
+                      <span className="m--up">Sign Up</span>
+                      <span className="m--in">Sign In</span>
+                  </div>
+              </div>
+              <div className="form sign-up">
+                  <h2>Create your Account</h2>
+                  <label>
+                      <span>Username</span>
+                      <input type="text" onChange={(e)=>{setinp(e.target.value)}}/>
+                  </label>
+                  {/* <label>
+                      <span>Email</span>
+                      <input type="email" />
+                  </label> */}
+                  <label>
+                      <span>Password</span>
+                      <input type="password" onChange={(e)=>{setpass(e.target.value)}}/>
+                  </label>
+                  <button type="button" className="subbit" onClick={signer}>Sign Up</button> 
+              </div>
+          </div>
+      </div>
+      </div>
+    
+
+            {/* <div className="mb-3 row">
     <label htmlFor="staticEmail" className="col-sm-2 col-form-label">Username</label>
     <div className="col-sm-10">
     <input type="email" className="form-control" id="exampleFormControlInput1" placeholder="Username" onChange={(e)=>{setlogininp(e.target.value)}}/>
     </div>
   </div>
+
   <div className="mb-3 row">
     <label htmlFor="inputPassword" className="col-sm-2 col-form-label" >Password</label>
     <div className="col-sm-10">
@@ -163,13 +223,13 @@ const navigate = useNavigate();
   <label className="form-check-label" htmlFor="flexCheckDefault">
     Remember me!!
   </label>
-</div>
+</div> */}
 
 {/* className="btn btn-primary" */}
 
-{forgot()}
+{/* {forgot()} */}
 
-  {sign_up()}
+  {/* {sign_up()} */}
 
           </>
       )
