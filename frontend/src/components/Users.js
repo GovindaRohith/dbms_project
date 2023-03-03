@@ -1,29 +1,20 @@
 import React from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import axios from './axios';
-import { useCookies } from 'react-cookie';
-import Cookies from 'js-cookie';
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Link,
-  useNavigate,
-  Navigate
-} from "react-router-dom";
+ 
 // https://jsonplaceholder.typicode.com/posts?_page=${page}&_limit=10
 // https://jsonplaceholder.typicode.com/photos?_page=${page}&_limit=10
 // https://pokeapi.co/api/v2/pokemon?_page=${page}&_limit=10
 const refresh = (setItems) => {};
  
-export default function App() {
+export default function Users() {
  const [items, setItems] = React.useState([]);
- const [cookies, setCookie] = useCookies(['name']);
  let page = 1;
 const fetchData = (setItems, items) => {
  axios
-   .get('/my_questions/'+cookies.username)
+   .get('/users')
    .then((res) => {
+    console.log(res.data)
      setItems([...items, ...res.data]);
      page = page + 1;
    });
@@ -32,8 +23,6 @@ const fetchData = (setItems, items) => {
    fetchData(setItems,items)
  },[])
  return (
-  <>
-    <Link to="/homepage/add_quest">Add a question</Link>
    <InfiniteScroll
      dataLength={items.length} //This is important field to render the next data
      next={() => {
@@ -51,10 +40,10 @@ const fetchData = (setItems, items) => {
      pullDownToRefresh
      pullDownToRefreshThreshold={50}
      pullDownToRefreshContent={
-       <h3 style={{ textAlign: "center" }}>Pull down to refresh</h3>
+       <h3 style={{ textAlign: "center" }}># 8595; Pull down to refresh</h3>
      }
      releaseToRefreshContent={
-       <h3 style={{ textAlign: "center" }}>Release to refresh</h3>
+       <h3 style={{ textAlign: "center" }}># 8593; Release to refresh</h3>
      }
    >
      <div style={{ minHeight: "100vh" }}>
@@ -62,13 +51,12 @@ const fetchData = (setItems, items) => {
         <>
         {/* <img src={user.url} height="100px" width="200px" /> */}
         <div >
-           <h1>{user.TagName} {user.last_editor_display_name} {user.last_edit_date} {user.is_accepted_answer} {user.up_vote} {user.down_vote} {user.score} {user.body_text} </h1>
+           <h1>{user.display_name} </h1>
         </div>
         </>
          
        ))}
      </div>
    </InfiniteScroll>
-   </>
  );
 }

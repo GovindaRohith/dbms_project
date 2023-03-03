@@ -72,8 +72,8 @@ CREATE TABLE post_history (
 CREATE TABLE comments (
    post_id INTEGER NOT NULL,
    display_name VARCHAR(255),
-    comment_text TEXT,
-    PRIMARY KEY (post_id,display_name) ,
+    comment_text VARCHAR(500),
+    PRIMARY KEY (post_id,display_name,comment_text) ,
     FOREIGN KEY (post_id) REFERENCES posts(post_id),
     FOREIGN KEY (display_name) REFERENCES users(display_name)
 );

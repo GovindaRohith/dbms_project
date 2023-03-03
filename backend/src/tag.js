@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const path = require('path')
-const conn=require('./db')
+const conn=require('./db.js')
 
 router.post('/', (req, res)=>
 {
@@ -37,5 +37,13 @@ router.post('/', (req, res)=>
       })
     //get a string and seperate into arrays and do query on words
 })
-
+router.get('/', function(req, res) {
+    // const owner_name = req.params.acc_nam;
+  //   const owner_name = 'Teja';
+    var sql = 'select * from tags';
+    conn.query(sql, function (err, data) {
+    if (err) throw err;
+    res.send(data)
+  });
+  });
 module.exports = router

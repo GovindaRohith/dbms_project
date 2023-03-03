@@ -16,9 +16,10 @@ import Top_questions from './Top_questions';
 import My_Answers from './My_Answers';
 import My_questions from './My_questions';
 import Tags from './Tags';
+import Users from './Users';
 
 export default function Homepage(){
-    const navigate = useNavigate();
+const navigate = useNavigate();
 const [cookies, setCookie] = useCookies(['name']);
 const [user,setuser]=useState("")
 const [element,setelement]=useState(<Top_questions/>)
@@ -41,6 +42,7 @@ return(
     <br/>
     <Link onClick={()=>{setelement(<Tags/>)}}>Tags</Link>
     <br/>
+    <Link onClick={()=>{setelement(<Users/>)}}>Users</Link>
     <br/>
     <br/>
     {element}
