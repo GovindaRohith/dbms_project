@@ -47,10 +47,11 @@ function Quest_Ans() {
     }
   ])
   useEffect(()=>{
+    
     axios.get("/quest_ans/"+postid+"/"+cookies.username)
          .then((response) => {
             var arr=[]
-            console.log(response.data[1])
+            console.log(response)
             arr.push(...response.data[0])
             for(var i=0;i<response.data[1].length;i++)
             {
@@ -152,7 +153,7 @@ function Quest_Ans() {
     {
       return(
         <>
-        <Link to="#">Edit this question</Link>
+        <Link to="#" type="button" className="btn btn-outline-success" ><i class="fas fa-edit"></i> Edit </Link>
         </>
       )
     }
@@ -215,7 +216,7 @@ function Quest_Ans() {
         })
     window.location.reload(false);
   }
-  const ans_edit=(index)=>
+  const ans_edit2=(index)=>
   {
   if(dat[index].owner_display_name==cookies.username)
     {
@@ -225,6 +226,61 @@ function Quest_Ans() {
   Edit this answer
 </button>
 
+<div className="modal fade" id="staticBackdrop20" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div className="modal-dialog">
+    <div className="modal-content">
+      <div className="modal-header">
+        <h1 className="modal-title fs-5" id="staticBackdropLabel">Modal Edit your answer</h1>
+        <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div className="modal-body">
+      <div className="input-group">
+  <span className="input-group-text">Headline</span>
+  <textarea className="form-control" value={editans.post_title}  aria-label="With textarea" placeholder={dat[index].post_title} onChange={(e)=>{
+  seteditans({...editans,post_title:e.target.value,post_id:dat[index].post_id})    
+  }}/>
+    
+</div>
+      <div className="input-group">
+  <span className="input-group-text">Your answer</span>
+  <textarea className="form-control" value={editans.body_text}  aria-label="With textarea" placeholder={dat[index].body_text} onChange={(e)=>{
+  seteditans({...editans,body_text:e.target.value,post_id:dat[index].post_id})    
+  }}/>
+    
+</div>
+      </div>
+      <div className="modal-footer">
+        <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" data-bs-dismiss="modal" className="btn btn-primary" onClick={()=>{
+          seteditans({...dat[index],body_text:editans.body_text,post_title:editans.post_title});
+          var tempo=dat;
+          tempo[index]={...editans}
+          // tempo=[...tempo,tempo[index]]
+          setdat([...tempo])
+          ans_edit_axi(index)
+        }}>Edit Answer!!!</button>
+      </div>
+    </div>
+  </div>
+</div>
+        </>
+      )
+    }
+    else
+    {
+      return (
+        <>
+        </>
+      )
+    }
+  }
+  const ans_edit=(index)=>
+  {
+  if(dat[index].owner_display_name==cookies.username)
+    {
+      return(
+        <>
+        <Link to="#" type="button" className="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#staticBackdrop20" ><i class="fas fa-edit"></i> Edit </Link>
 <div className="modal fade" id="staticBackdrop20" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div className="modal-dialog">
     <div className="modal-content">
@@ -329,13 +385,56 @@ function Quest_Ans() {
   const quest_component=(each,index)=>{
     return (
       <>
-      Question:
-        <div className="card mb-3">
+      <div className='container py-4'>
+        <div className="card mb-4">
     <div className="card-body">
-    <h5 className="card-title">{each.post_title}</h5>
-    <p className="card-text">{each.body_text}</p>
-    {quest_is_edit(each.owner_display_name)}
-    <button type="button"  className={each.upvote_state} onClick={()=>{
+    <div className="row">
+                  <div className="col-sm-9">
+                  <h3>{each.post_title}</h3>
+                  </div>
+                  <div className="col-sm-3">
+                    <div className="input-group">
+                      {quest_is_edit(each.owner_display_name)}
+                    </div>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-sm-9">
+                <p> 
+                  <small className="text-muted">Asked on :</small> {timegetter(each.creation_date)} &emsp;
+                  <small className="text-muted">Modified on :</small>  {timegetter(each.last_edit_date)} &emsp;
+                  <small className="text-muted">Views:</small>  {each.views}
+                </p>
+                </div>
+                <div className="col-sm-3">
+                
+                </div>
+                </div>
+                
+                {/* tag section starts here */}
+                <p className="card-text">Question:</p>
+                <p className="card-text">{each.body_text}</p>
+                <ul className="list-inline">
+                  Related tags :&emsp;
+                {each.tags.map((taggy)=>{
+                    return(
+                      <>
+                  <li className="list-inline-item"><button type="button" className="btn btn-light">{taggy}</button></li>
+                      {/* <li className="list-inline-item"><button type="button" className="btn btn-outline-dark">{taggy}</button></li> */}
+                      </>
+                  )
+                }
+                )}
+                </ul>
+                <p> 
+                <span className="card-text">Accepted answers : </span> {each.acc_ans_count} &emsp;
+                <span className="card-text">Score :</span> {each.score} &emsp;
+                </p>
+                {/* tag section ends here */}
+                <p className="card-text">Content License : {each.content_license}</p>    
+{/* still need to update in each in main key */}
+<div className='mb-3'>
+<button type="button"  className={each.upvote_state} onClick={()=>{
       if(each.downvote_state=="card-text btn btn-primary")
       {
         // console.log({...vote,owner_display_name:each.owner_display_name,post_id:each.post_id,up_vote:each.up_vote+1,down_vote:each.down_vote,isup_vote:true,oldup_vote:each.up_vote,olddown_vote:each.down_vote})
@@ -369,10 +468,9 @@ function Quest_Ans() {
             olddown_vote:each.down_vote+1});
       }
 }}>
-   Upvote<span className="badge text-bg-secondary">{each.up_vote}</span>
+   <i class="fas fa-thumbs-up"> </i> {each.up_vote}
 </button>
-{/* still need to update in each in main key */}
-<button type="button"  className={each.downvote_state} onClick={()=>{
+<button type="button"  className={each.downvote_state+" mx-3"} onClick={()=>{
   if(each.upvote_state=="card-text btn btn-primary")
   {
     const temp=[...dat]
@@ -405,29 +503,24 @@ function Quest_Ans() {
         olddown_vote:each.down_vote-1});
     }
 }}>
-   Downvote<span className="badge text-bg-secondary">{each.down_vote}</span>
+   <i class="fas fa-thumbs-down"> </i> {each.down_vote}
 </button>
-
-<p className="card-text"><small className="text-muted">Posted by : {profile_director(each.owner_display_name)} here when click on name if same as user goto edit profile else variant of profile ::::: {timegetter(each.creation_date)}</small></p>
-    <p className="card-text"><small className="text-muted">Last edited by : {profile_director(each.last_editor_display_name)} on ::: {timegetter(each.last_edit_date)}</small></p>
-    <p className="card-text"><small className="text-muted">views: {each.views}</small></p>
-    <p className="card-text"><small className="text-muted">score: {each.score}</small></p>
-    <p className="card-text"><small className="text-muted">Accepted answers:{each.acc_ans_count}</small></p>
-    <p className="card-text"><small className="text-muted">Content license:{each.content_license}</small></p>
-    <p className="card-text"><small className="text-muted">Tags: 
-    {each.tags.map((taggy)=>{
-      return(
-        <>
-        <small className="card-text text-muted"> {taggy},</small>
-        </>
-      )
-    }
-    )}
-    </small></p>
-    <p className="card-text"><small className="text-muted">comments section tbd here</small></p>
+</div>
+<div class="row">
+    <div class="col-sm">
     <p>
-    <button className="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target={"#collapseExample"+each.post_id} aria-expanded="false" aria-controls="multiCollapseExample2">Comments</button>
+    <Link to="#"  type="button" data-bs-toggle="collapse" data-bs-target={"#collapseExample"+each.post_id} aria-expanded="false" aria-controls="multiCollapseExample2"> <i class="far fa-comment"></i> Comments</Link >
+
 </p>
+    </div>
+    <div class="col-sm">
+      {/* One of three columns */}
+<p className="card-text"><small className="text-muted">Last edited by : {profile_director(each.last_editor_display_name)}</small></p>
+    </div>
+    <div class="col-sm">
+    <p className="card-text"><small className="text-muted">Posted by : {profile_director(each.owner_display_name)}</small></p>
+    </div>
+  </div>
 {/* each comment section */}
 <div className="collapse" id={"collapseExample"+each.post_id}>
   {
@@ -435,8 +528,16 @@ function Quest_Ans() {
       return(<>
       <div className="card card-body">
       Comment : {commy.comment_text}
-      <br/>
-      Comment done by : {commy.display_name}
+      <div class="row">
+    <div class="col-sm">
+    </div>
+    <div class="col-sm">
+    </div>
+    <div class="col-sm">
+    Comment done by : {profile_director(commy.display_name)}
+    </div>
+  </div>
+      
       </div>
       <br/>
       </>)
@@ -445,8 +546,8 @@ function Quest_Ans() {
   }
   <div className="card card-body">
   <div className="input-group mb-3">
-  <input type="text" className="form-control" value={eachcomm.comment_text} placeholder="Add a comment" aria-label="Recipient's username" aria-describedby="button-addon2" onChange={e=>{seteachcomm({...eachcomm,comment_text:e.target.value,post_id:each.post_id,display_name:cookies.username})}}/>
-  <button className="btn btn-outline-secondary" type="button" id="button-addon2" onClick={()=>{
+  <textarea type="text" className="form-control" value={eachcomm.comment_text} placeholder="Add a comment" aria-label="Recipient's username" aria-describedby="button-addon2" onChange={e=>{seteachcomm({...eachcomm,comment_text:e.target.value,post_id:each.post_id,display_name:cookies.username})}}/>
+  <button className="btn btn-outline-success" type="button" id="button-addon2" onClick={()=>{
     var temp=[...dat];
     var temp2=temp[index].comments;
     temp2=[...temp2,{comment_text:eachcomm.comment_text,display_name:cookies.username}]
@@ -466,22 +567,58 @@ function Quest_Ans() {
 
 </div>
 </div>
-  
+</div>
+<hr/>
+<div class="h-100 d-flex align-items-center justify-content-center">
+      <h3>Answers </h3>
+</div>
+{/* <hr/> */}
       </>
     )
   }
   const ans_component=(each,index)=>{    
     return (
       <>
-      Answer:{index+1}
-        <div className="card mb-3">
+        <div className='container py-4'>
+        <div className="card mb-4">
     <div className="card-body">
-
-    <h5 className="card-title">{each.post_title}</h5>
-    <p className="card-text">{each.body_text}</p>
-    {ans_edit(index)}
     {accept_this(index)} 
-    <button type="button"  className={each.upvote_state} onClick={()=>{
+    <p className="card-text"><small className="text-muted">is accepted: {acceptor(each.is_accepted_answer)}</small></p>
+    <div className="row">
+                  <div className="col-sm-9">
+                  <h3>{each.post_title}</h3>
+                  </div>
+                  <div className="col-sm-3">
+                    <div className="input-group">
+                      {ans_edit(index)}
+                    </div>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-sm-9">
+                <p> 
+                  <small className="text-muted">Asked on :</small> {timegetter(each.creation_date)} &emsp;
+                  <small className="text-muted">Modified on :</small>  {timegetter(each.last_edit_date)} &emsp;
+                  <small className="text-muted">Views:</small>  {each.views}
+                </p>
+                </div>
+                <div className="col-sm-3">
+                
+                </div>
+                </div>
+                
+                {/* tag section starts here */}
+                <p className="card-text">Question:</p>
+                <p className="card-text">{each.body_text}</p>
+                
+                <p> 
+                <span className="card-text">Score :</span> {each.score} &emsp;
+                </p>
+                {/* tag section ends here */}
+                <p className="card-text">Content License : {each.content_license}</p>    
+{/* still need to update in each in main key */}
+<div className='mb-3'>
+<button type="button"  className={each.upvote_state} onClick={()=>{
       if(each.downvote_state=="card-text btn btn-primary")
       {
         // console.log({...vote,owner_display_name:each.owner_display_name,post_id:each.post_id,up_vote:each.up_vote+1,down_vote:each.down_vote,isup_vote:true,oldup_vote:each.up_vote,olddown_vote:each.down_vote})
@@ -515,10 +652,9 @@ function Quest_Ans() {
             olddown_vote:each.down_vote+1});
       }
 }}>
-   Upvote<span className="badge text-bg-secondary">{each.up_vote}</span>
+   <i class="fas fa-thumbs-up"> </i> {each.up_vote}
 </button>
-{/* still need to update in each in main key */}
-<button type="button"  className={each.downvote_state} onClick={()=>{
+<button type="button"  className={each.downvote_state+" mx-3"} onClick={()=>{
   if(each.upvote_state=="card-text btn btn-primary")
   {
     const temp=[...dat]
@@ -551,43 +687,51 @@ function Quest_Ans() {
         olddown_vote:each.down_vote-1});
     }
 }}>
-   Downvote<span className="badge text-bg-secondary">{each.down_vote}</span>
+   <i class="fas fa-thumbs-up"> </i> {each.down_vote}
 </button>
-    <p className="card-text"><small className="text-muted">Posted by : {profile_director(each.owner_display_name)} here when click on name if same as user goto edit profile else variant of profile ::::: {timegetter(each.creation_date)} </small></p>
-    <p className="card-text"><small className="text-muted">Last edited by : <Link to="#" >{each.last_editor_display_name}</Link> on ::: {timegetter(each.last_edit_date)}</small></p>
-    <p className="card-text"><small className="text-muted">is accepted: {acceptor(each.is_accepted_answer)}</small></p>
-    <p className="card-text"><small className="text-muted">views: {each.views}</small></p>
-    <p className="card-text"><small className="text-muted">score: {each.score}</small></p>
-    <p className="card-text"><small className="text-muted">Accepted answers:{each.acc_ans_count}</small></p>
-    <p className="card-text"><small className="text-muted">Content license:{each.content_license}</small></p>
-    
-    <p className="card-text"><small className="text-muted">comments section tbd here</small></p>
+</div>
+<div class="row">
+    <div class="col-sm">
     <p>
-    <button className="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target={"#collapseExample"+each.post_id} aria-expanded="false" aria-controls="multiCollapseExample2">Comments</button>
+    <Link to="#"  type="button" data-bs-toggle="collapse" data-bs-target={"#collapseExample"+each.post_id} aria-expanded="false" aria-controls="multiCollapseExample2"> <i class="far fa-comment"></i> Comments</Link >
 
 </p>
+    </div>
+    <div class="col-sm">
+      {/* One of three columns */}
+<p className="card-text"><small className="text-muted">Last edited by : {profile_director(each.last_editor_display_name)}</small></p>
+    </div>
+    <div class="col-sm">
+    <p className="card-text"><small className="text-muted">Posted by : {profile_director(each.owner_display_name)}</small></p>
+    </div>
+  </div>
 {/* each comment section */}
 <div className="collapse" id={"collapseExample"+each.post_id}>
   {
-      each.comments.map((commy)=>{
-        if(commy!=null) 
-        {
-            return(<>
-                <div className="card card-body">
-                Comment : {commy.comment_text}
-                <br/>
-                Comment done by : {commy.display_name}
-                </div>
-                <br/>
-                </>)
-        }        
-        
+    each.comments.map((commy)=>{
+      return(<>
+      <div className="card card-body">
+      Comment : {commy.comment_text}
+      <div class="row">
+    <div class="col-sm">
+    </div>
+    <div class="col-sm">
+    </div>
+    <div class="col-sm">
+    Comment done by : {profile_director(commy.display_name)}
+    </div>
+    </div>
+      
+      </div>
+      <br/>
+      </>)
     })
+    
   }
   <div className="card card-body">
   <div className="input-group mb-3">
-  <input type="text" className="form-control" value={eachcomm.comment_text} placeholder="Add a comment" aria-label="Recipient's username" aria-describedby="button-addon2" onChange={e=>{seteachcomm({...eachcomm,comment_text:e.target.value,post_id:each.post_id,display_name:cookies.username})}}/>
-  <button className="btn btn-outline-secondary" type="button" id="button-addon2" onClick={()=>{
+  <textarea type="text" className="form-control" value={eachcomm.comment_text} placeholder="Add a comment" aria-label="Recipient's username" aria-describedby="button-addon2" onChange={e=>{seteachcomm({...eachcomm,comment_text:e.target.value,post_id:each.post_id,display_name:cookies.username})}}/>
+  <button className="btn btn-outline-seccess" type="button" id="button-addon2" onClick={()=>{
     var temp=[...dat];
     var temp2=temp[index].comments;
     temp2=[...temp2,{comment_text:eachcomm.comment_text,display_name:cookies.username}]
@@ -600,14 +744,14 @@ function Quest_Ans() {
       display_name:"Comment done person here"
     })//this is initilisation of comments
   }}>Add Comment!!!</button>
-</div>
+  </div>
       </div>
 </div>
 {/* each comment section */}
 
 </div>
 </div>
-  
+</div>
       </>
     )
   }

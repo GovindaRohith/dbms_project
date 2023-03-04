@@ -48,7 +48,6 @@ if (pti[0].post_type_id == 1) {
                     Result[0]=Result1;
                     var sql3 = "select p.owner_display_name,p.last_editor_display_name,p.last_edit_date,p.is_accepted_answer,p.post_id,p.up_vote,p.down_vote,p.score,p.views,p.acc_ans_count,p.comment_count,p.post_title,p.body_text,p.creation_date,p.closed_date from posts as p where p.parent_id=?;";
                     con.query(sql3, [p_id], async function (error3, result3, fields3) {  
-                        console.log(result3);                        
                         for(let i=0;i<result3.length;i++)
                         {
                             var rarray = await new Promise(function(resolve, reject) {
@@ -57,7 +56,6 @@ if (pti[0].post_type_id == 1) {
                                     resolve(result4);
                                 })
                             });
-                            // console.log(rarray)
                             // if(rarray==undefined)
                             if(rarray==undefined ||rarray==null){
                                 result3[i].comments=[]
@@ -71,6 +69,7 @@ if (pti[0].post_type_id == 1) {
                             Result2=[...Result2,result3[i]];
                         }
                         Result=[Result1,Result2];
+                        // console.log(Result)
                         res.send(Result);
                     })
                 })
@@ -129,7 +128,6 @@ else {
 
 //up_vote,down_vote
 router.put('/:p_id/:vw', (req, res) => {
-    console.log(req.body)
    var v_n=req.params.vw;
    var p_id=req.body.post_id;
    var o_w_d= req.body.owner_display_name; 
@@ -208,7 +206,6 @@ router.put('/',(req,res)=>{
 
 //add answer
 router.post('/addans',(req,res)=>{
-    console.log(req)
     var o_d_n=req.body.owner_display_name;
     var l_e_d_n=req.body.last_editor_display_name;
     var i_a_a=false;
@@ -229,10 +226,8 @@ router.post('/addans',(req,res)=>{
 //accepted answer
 router.post('/acc_ans',(req,res)=>{
     var p_id=req.body.post_id;
-    console.log(p_id);
     var o_d_n=req.body.owner_display_name;
     var parent_id=req.body.parent_id;
-    console.log(parent_id);
     con.query("UPDATE posts SET last_editor_display_name=?,last_edit_date=now(),is_accepted_answer=true WHERE post_id=?;",[o_d_n,p_id],function(error,result){
         if(error)throw error;
     })

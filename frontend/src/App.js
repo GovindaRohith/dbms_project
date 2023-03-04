@@ -11,16 +11,19 @@ import Homepage from './components/Homepage';
 import Profile from './components/Profile';
 import Add_question from './components/Add_question';
 import Quest_ans from './components/Quest_ans';
+import Sin_questans from './components/Sin_questans';
+import Navbar from './components/Navbar';
 function App() {
   
   return (
       <Router>
       <Routes>
       <Route path="/" element={<Login/>}/>
-      <Route path="/homepage" element={<Homepage/>}/>
+      <Route path="/homepage" element={<Navbar/>}/>
       <Route path="/homepage/add_quest" element={<Add_question/>}/>
       <Route path="/homepage/profile" element={<Profile/>}/>
       <Route path="/homepage/quest" element={<Quest_ans/>}/>
+      <Route path="/homepage/temp" element={<Sin_questans/>}/>
       {/* These comments show how to routing using params dont delete them*/}
       {/* <Route path="/student" element={<Studentdash/>}/> */}
       {/* <Route path="/student/subtopic/:topicid/:subtopicid/:subtopicname" element={<Topic/>}/> */}
