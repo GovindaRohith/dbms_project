@@ -4,10 +4,14 @@ const con =require("./db")
 
 
 router.get('/:acc_nam', (req, res) => {
+  console.log(req.params.acc_nam)
     var acc_name=req.params.acc_nam;
-    con.query("select U.display_name,U.account_id,U.password,U.reputation,U.up_votes,U.down_votes,U.views,U.website_url,U.creation_date, U.about_me,U.profile_image_url,B.name,B.work_location from badges as B,users as U where U.display_name=(?) and B.account_id=U.account_id;",[acc_name], function (err, result, fields) {
-      if (err) throw err;
-      res.send(result);  
+    con.query("select U.display_name,U.account_id,U.password,U.reputation,U.up_votes,U.down_votes,U.views,U.website_url,U.creation_date, U.about_me,U.profile_image_url from users as U where U.display_name=(?) ;",[acc_name], function (err, result1, fields) {
+      con.query("select B.name,B.work_location from badges as B where B.account_id=(?);",[result1[0].account_id],function(error,result2){
+      var result=[...result1,...result2]
+        res.send(result);  
+      })
+
     });
   })
 

@@ -9,6 +9,7 @@ import {
   Navigate,
   useParams
 } from "react-router-dom";
+import def from "./blank-profile-picture-973460_1280.jpg" 
 import { useCookies } from 'react-cookie';
 import Cookies from 'js-cookie';
 import Top_questions from './Top_questions';
@@ -76,8 +77,8 @@ function Navbar_only() {
               <li className="nav-item me-3 me-lg-0 dropdown">
                 <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown1" role="button" data-mdb-toggle="dropdown"
                   aria-expanded="false">
-                  <img src="https://cdn.shopify.com/s/files/1/1061/1924/products/Smiling_Face_Emoji_large.png?v=1571606036" className="rounded-circle" height="50"
-                    alt="" loading="lazy" />
+                  <img src={cookies.profileImageUrl} className="rounded-circle" height="50"
+                    alt="" loading="lazy" onError={(e)=>{e.target.src=def}}/>
                 </a>
                 <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown1">
                   <li><Link className="dropdown-item" to="/homepage/profile">Profile</Link></li>
@@ -103,7 +104,7 @@ function Navbar_only() {
                 <i className="fas fa-globe-asia fa-2x"/>
                 </div>
                 <div className='col'>
-                  <span style={{fontSize:'150%'}} onClick={()=>{setelement(<Top_questions/>)}}>Top Questions</span>
+                  <span style={{fontSize:'150%'}} onClick={()=>{navigate(-1)}}>Top Questions</span>
                 </div>
               </div> 
           
@@ -112,7 +113,7 @@ function Navbar_only() {
                 <i className="fas fa-question fa-2x"/>
                 </div>
                 <div className='col'>
-                  <span style={{fontSize:'150%'}} onClick={()=>{setelement(<My_questions/>)}}>My Questions</span>
+                  <span style={{fontSize:'150%'}} onClick={()=>{navigate(-1)}}>My Questions</span>
                 </div>
               </div>
     
@@ -121,7 +122,7 @@ function Navbar_only() {
                 <i className="fas fa-comments fa-2x"/>
                 </div>
                 <div className='col'>
-                  <span style={{fontSize:'150%'}} onClick={()=>{setelement(<My_Answers/>)}}>My Answers</span>
+                  <span style={{fontSize:'150%'}} onClick={()=>{navigate(-1)}}>My Answers</span>
                 </div>
               </div>
 
@@ -130,7 +131,7 @@ function Navbar_only() {
                 <i className="fas fa-tags fa-2x"/>
                 </div>
                 <div className='col'>
-                  <span style={{fontSize:'150%'}} onClick={()=>{setelement(<Tags/>)}}>Tags</span>
+                  <span style={{fontSize:'150%'}} onClick={()=>{navigate(-1)}}>Tags</span>
                 </div>
             </div> 
 

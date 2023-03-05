@@ -28,7 +28,19 @@ body {
     top: 0;
     left: 0;
 }
-
+.sbit {
+    display: block;
+    margin: 0 auto;
+    width: 260px;
+    height: 36px;
+    border-radius: 30px;
+    color: #fff;
+    font-size: 15px;
+    cursor: pointer;
+    margin-bottom: 20px;
+    background: #d49f56;
+    text-transform: uppercase;
+}
 input,
 button {
     border: none;

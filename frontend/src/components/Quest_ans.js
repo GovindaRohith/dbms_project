@@ -190,7 +190,7 @@ function Quest_Ans() {
     {
       return (
         <>
-        <Link to="#">{name}</Link> 
+        <Link to="/homepage/profile">{name}</Link> 
         {/* here is edit profile page */}
         </>
       )
@@ -199,7 +199,7 @@ function Quest_Ans() {
     {
       return (
         <>
-        <Link to="#">{name}</Link> 
+        <Link to={"/homepage/show_prof/"+name}>{name}</Link> 
         {/* here is go to profile page */}
         </>
       )
@@ -618,7 +618,7 @@ function Quest_Ans() {
         olddown_vote:each.down_vote-1});
     }
 }}>
-   <i className="fas fa-thumbs-up"> </i> {each.down_vote}
+   <i className="fas fa-thumbs-down"> </i> {each.down_vote}
 </button>
 </div>
 <div className="row">

@@ -59,7 +59,10 @@ import axios from "./axios";
           </div>
           <div className="col-sm-3">
             <div className="input-group">
-            <button type="button" className="btn btn-primary">Ask Question</button>
+            {/* <button type="button" className="btn btn-primary">Ask Question</button> */}
+            <Link type="button" to="/homepage/add_quest" className="btn btn-primary" onClick={()=>{
+              localStorage.setItem("key",null)
+            }}>Ask Question</Link>
             </div>
           </div>
         </div>

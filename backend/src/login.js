@@ -41,23 +41,43 @@ router.put('/',(req,res)=>{
   })
 })
 
-router.post("/signin",(req,res)=>{
-  const name=req.body.user;
-  const password=req.body.password;
-  var code=201;
-  str="select display_name,password from users where display_name=? and password=?;"
-  conn.query(str,[name,password],(error,rows,fields)=>{
-    if(error) throw err;
-    if(rows.length==0)  //error handling
-    {
-      res.sendStatus(404)
+router.post("/signin", (req, res) => {
+  const name = req.body.user;
+  const password = req.body.password;
+  const query = "select display_name, password, profile_image_url from users where display_name = ? and password = ?";
+  conn.query(query, [name, password], (error, rows, fields) => {
+    if (error) {
+      res.status(500).send("Internal server error");
+    } else if (rows.length == 0) {
+      res.status(404).send("User not found");
+    } else {
+      const user = rows[0]; // Assuming only one row is returned
+      res.status(200).json({
+        displayName: user.display_name,
+        profileImageUrl: user.profile_image_url,
+      });
     }
-    else 
-    {
-      res.sendStatus(200)
-    }
-  })
-})
+  });
+});
+
+
+// router.post("/signin",(req,res)=>{
+//   const name=req.body.user;
+//   const password=req.body.password;
+//   var code=201;
+//   str="select display_name,password,profile_image_url from users where display_name=? and password=?;"
+//   conn.query(str,[name,password],(error,rows,fields)=>{
+//     if(error) throw err;
+//     if(rows.length==0)  //error handling
+//     {
+//       res.sendStatus(404)
+//     }
+//     else 
+//     {
+//       res.sendStatus(200)
+//     }
+//   })
+// })
 
 // conn.end(function(err) {
 //     if (err) throw err;

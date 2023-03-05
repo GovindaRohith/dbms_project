@@ -28,12 +28,12 @@ if (pti[0].post_type_id == 1) {
             con.query(sql1, [p_id], function (error1, result1, fields1) {
                 var sql2 = "select c.display_name,c.comment_text from comments as c where c.post_id=?;select t.tag_name from tags as t,tag_posts as tp where tp.post_id =? and t.tag_id=tp.tag_id;";
                 con.query(sql2, [p_id,p_id], function (error2, result2, fields2) {
-                    if(result2[0]==undefined || result2[0]==null){
-                        result1[0].comments=[]
-                    }
-                    else{
+                    // if(result2[0]==undefined || result2[0]==null){
+                    //     result1[0].comments=[]
+                    // }
+                    // else{
                         result1[0].comments=result2[0];
-                    }
+                    // }
                     
                     
                     result1[0].upvote_state="card-text btn btn-primary";
@@ -48,25 +48,23 @@ if (pti[0].post_type_id == 1) {
                     Result[0]=Result1;
                     var sql3 = "select p.owner_display_name,p.last_editor_display_name,p.last_edit_date,p.is_accepted_answer,p.post_id,p.up_vote,p.down_vote,p.score,p.views,p.acc_ans_count,p.comment_count,p.post_title,p.body_text,p.creation_date,p.closed_date from posts as p where p.parent_id=?;";
                     con.query(sql3, [p_id], async function (error3, result3, fields3) {  
-                        for(let i=0;i<result3.length;i++)
-                        {
+                        for(let i=0;i<result3.length;i++){
                             var rarray = await new Promise(function(resolve, reject) {
-                                var sql4 = "select c.comment_text,c.display_name from comments where c.post_id=?";
-                                con.query(sql4, [result3[i].post_id], function (error4, result4, fields4) {
+                                // console.log(result3[i].post_id);
+                                var sql4 = "select c.comment_text,c.display_name from comments as c where c.post_id=(?)";
+                                con.query(sql4, [result3[i].post_id], function (error4, result4, fields4) {  
+                                    // console.log(result4); 
+                                    // console.log("--------------");   
                                     resolve(result4);
                                 })
                             });
-                            // if(rarray==undefined)
-                            if(rarray==undefined ||rarray==null){
-                                result3[i].comments=[]
-                            }
-                            else{
-                                result3[i].comments=rarray
-                            }
-                            
+                            // console.log(rarray);
+                            result3[i].comments=rarray;
+                            // console.log(result3[i]);
                             result3[i].upvote_state="card-text btn btn-primary";
                             result3[i].downvote_state="card-text btn btn-primary";
                             Result2=[...Result2,result3[i]];
+                           
                         }
                         Result=[Result1,Result2];
                         // console.log(Result)
@@ -81,12 +79,12 @@ else {
                 con.query(sql1, [pb[0].parent_id], function (error1, result1, fields1) {
                     var sql2 = "select c.display_name,c.comment_text from comments as c where c.post_id=?;select t.tag_name from tags as t,tag_posts as tp where tp.post_id =? and t.tag_id=tp.tag_id;";
                     con.query(sql2, [pb[0].parent_id,pb[0].parent_id], function (error2, result2, fields2) {
-                        if(result2[0]==undefined || result2[0]==null){
-                            result1[0].comments=[]
-                        }
-                        else{
+                        // if(result2[0]==undefined || result2[0]==null){
+                        //     result1[0].comments=[]
+                        // }
+                        // else{
                             result1[0].comments=result2[0];
-                        }
+                        // }
                         result1[0].upvote_state="card-text btn btn-primary";
                             result1[0].downvote_state="card-text btn btn-primary";
                             result1[0].tags=[]; 
@@ -98,22 +96,23 @@ else {
                         var Result1 = result1
                         var sql3 = "select p.owner_display_name,p.last_editor_display_name,p.last_edit_date,p.is_accepted_answer,p.post_id,p.up_vote,p.down_vote,p.score,p.views,p.acc_ans_count,p.comment_count,p.post_title,p.body_text,p.creation_date,p.closed_date   from posts as p where p.post_id=?;";
                         con.query(sql3, [p_id], async function (error3, result3, fields3) {                        
-                            for(let i=0;i<result3.length;i++){           
+                            for(let i=0;i<result3.length;i++){
                                 var rarray = await new Promise(function(resolve, reject) {
-                                    var sql4 = "select c.comment_text,c.display_name from comments where c.post_id=?";
-                                    con.query(sql4, [result3[i].post_id], function (error4, result4, fields4) {                                       
+                                    // console.log(result3[i].post_id);
+                                    var sql4 = "select c.comment_text,c.display_name from comments as c where c.post_id=(?)";
+                                    con.query(sql4, [result3[i].post_id], function (error4, result4, fields4) {  
+                                        // console.log(result4); 
+                                        // console.log("--------------");   
                                         resolve(result4);
                                     })
                                 });
-                                if(rarray==undefined ||rarray==null){
-                                    result3[i].comments=[]
-                                }
-                                else{
-                                    result3[i].comments=rarray
-                                }
+                                // console.log(rarray);
+                                result3[i].comments=rarray;
+                                // console.log(result3[i]);
                                 result3[i].upvote_state="card-text btn btn-primary";
-                            result3[i].downvote_state="card-text btn btn-primary";
+                                result3[i].downvote_state="card-text btn btn-primary";
                                 Result2=[...Result2,result3[i]];
+                               
                             }
                             Result=[Result1,Result2];
                             res.send(Result);

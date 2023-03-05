@@ -9,7 +9,7 @@ import {
   useNavigate
 } from "react-router-dom";
  
-export default function Users() {
+export default function Search_bar() {
   function rankings(rep){
     var out;
     if(rep <= 2000)  out = "Bronze";
@@ -89,7 +89,6 @@ export default function Users() {
   return (
 <>
 <div className='container my-3'>
-    <h1 className='ps-5'>Users</h1>
   <div className='row'>
     {/* <div className='col-md-6 mb-3'> */}
         <form className="d-flex align-items-center w-75 form-search">
@@ -97,8 +96,9 @@ export default function Users() {
             {/* <input type="search" className="form-control" placeholder="Search users" aria-label="Search" /> */}
             <div className="search-container">
     <div className="search-inner">
-      <input type="text" value={value} onChange={onChange} />
-      <button onClick={() => onSearch(value)}> Search </button>
+      {/* <input type="text" value={value} onChange={onChange} /> */}
+    <input type="search" className="form-control" placeholder="Search" aria-label="Search" value={value} onChange={onChange} />
+      {/* <button onClick={() => onSearch(value)}> Search </button> */}
     </div>
     <div className="dropdown">
       {data.filter((item) => {

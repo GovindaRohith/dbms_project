@@ -24,18 +24,18 @@ router.post('/', (req, res) => {
   });
 
 // { title: 'poke', body_text: 'pots', Tags: [ 'Python' ], lisc: 'asas' }
-  router.put('/', function(req, res){
-    console.log(req.body)
-    var sql = "UPDATE posts SET post_title = '"+ req.body.title + "', body_text = '"+ req.body.body_text +"', content_license = '"+ req.body.lisc +"' where post_id = '"+ req.body.post_id +"' ";
-    db.query(sql, function(err){
-      for (let index = 0; index < req.body.Tags.length; index++) {
-        var sql1 = "select tag_id from tags where tag_name = '" + req.body.Tags[index]+ "' into @var2;insert into tag_posts values(@var1, @var2);";
-        db.query(sql1, function (err,res2) {
-            if(err) throw err;
-            if(index+1==req.body.Tags.length) res.send("HEllo")
-        })
-      }    
-    })
+router.put('/', function(req, res){
+  console.log(req.body)
+  var sql = " DELETE from tag_posts where post_id = '" + req.body.post_id + "' ;UPDATE posts SET post_title = '"+ req.body.title + "', body_text = '"+ req.body.body_text +"', content_license = '"+ req.body.lisc +"' where post_id = '"+ req.body.post_id +"' ";
+  db.query(sql, function(err){
+    for (let index = 0; index < req.body.Tags.length; index++) {
+      var sql1 = "select tag_id from tags where tag_name = '" + req.body.Tags[index]+ "' into @var2;insert into tag_posts values(" + req.body.post_id + ", @var2);";
+      db.query(sql1, function (err,res2) {
+          if(err) throw err;
+          if(index+1==req.body.Tags.length) res.send("HEllo")
+      })
+    }    
   })
+})
   
 module.exports = router;

@@ -13,6 +13,7 @@ import Add_question from './components/Add_question';
 import Quest_ans from './components/Quest_ans';
 import Sin_questans from './components/Sin_questans';
 import Navbar from './components/Navbar';
+import Show_Prof from './components/Show_prof';
 function App() {
   
   return (
@@ -23,6 +24,7 @@ function App() {
       <Route path="/homepage/add_quest" element={<Add_question/>}/>
       <Route path="/homepage/profile" element={<Profile/>}/>
       <Route path="/homepage/quest" element={<Quest_ans/>}/>
+      <Route path="/homepage/show_prof/:display_name" element={<Show_Prof/>}/>
       {/* <Route path="/homepage/temp" element={<Sin_questans/>}/> */}
       {/* These comments show how to routing using params dont delete them*/}
       {/* <Route path="/student" element={<Studentdash/>}/> */}

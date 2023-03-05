@@ -107,8 +107,10 @@ const logger=()=>{
       password:loginpass,
   })
   .then((resp)=>{
+    console.log(resp.data)
     console.log(is_stored)
     setCookie('username', logininp, { path: '/' });
+    setCookie('profileImageUrl', resp.data.profileImageUrl, { path: '/' });
     if(is_stored===true)  localStorage.setItem("is_stored",1);
     else localStorage.setItem("is_stored",0);
     navigate("/homepage")
@@ -145,7 +147,22 @@ const navigate = useNavigate();
               <input className="forgot-pass" type="checkbox" checked={is_stored} onChange={()=>{setis_stored(!is_stored)}}></input>
               <p className="forgot-pass"><strong>Remember me!!</strong></p>
               </div> */}
-              <div className="row py-3">
+              <div className="row">
+              <div className='col'>
+                <p className="forgot-pass" hidden><strong>Remember</strong></p>
+              </div>
+              <div className='col'>
+                <div className="btn-group my-3" role="group" aria-label="Basic example">
+                  <button type="button" className="btn btn-light btn-sm"><input className="form-check checkbox-lg" type="checkbox" checked={is_stored} onChange={()=>{setis_stored(!is_stored)}}/></button>
+                  
+                  <button type="button" className="btn btn-light btn-sm" disabled>Remember me!!</button>
+                </div>
+              </div>
+              <div className='col'>
+                <p className="forgot-pass" hidden><strong>Remember</strong></p>
+              </div>
+            </div>
+              {/* <div className="row py-3">
                 <div className='col'>
                     <p className="forgot-pass" hidden><strong>Remember me!!</strong></p>
                 </div>
@@ -158,9 +175,9 @@ const navigate = useNavigate();
                 <div className='col'>
                   <p className="forgot-pass" hidden><strong>Remember me!!</strong></p>
                 </div>
-              </div>
+              </div> */}
                       
-              <button type="botton" className="subbit" onClick={logger}>Sign In</button>
+              <button type="botton" className="sbit" onClick={logger}>Sign In</button>
 
               {forgot()}    
           </div>

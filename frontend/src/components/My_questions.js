@@ -68,7 +68,9 @@ import axios from "./axios";
           </div>
           <div className="col-sm-3">
             <div className="input-group">
-            <button type="button" className="btn btn-primary">Ask Question</button>
+            <Link type="button" to="/homepage/add_quest" className="btn btn-primary" onClick={()=>{
+              localStorage.setItem("key",null)
+            }}>Ask Question</Link>
             </div>
           </div>
         </div>
@@ -161,7 +163,7 @@ import axios from "./axios";
                   <small className="text-muted">Last edited by</small>
                   </li>
                   <li className="list-inline-item">
-                    <a href='#'>{last_editor_display_name}</a>
+                  <Link to={"/homepage/show_prof/"+last_editor_display_name}>{last_editor_display_name}</Link>
                   </li>
                   <li className="list-inline-item">
                   <small className="text-muted">On</small>

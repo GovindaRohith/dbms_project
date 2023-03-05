@@ -151,7 +151,7 @@ import axios from "./axios";
                   <small className="text-muted">Posted by</small>
                   </li>
                   <li className="list-inline-item">
-                    <a href='#'>{owner_display_name}</a>
+                  <Link to={"/homepage/show_prof/"+owner_display_name}>{owner_display_name}</Link>
                   </li>
                   <li className="list-inline-item">
                   <small className="text-muted">On</small>

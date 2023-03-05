@@ -1,6 +1,13 @@
 import { useState, useEffect, useRef } from "react";
 import axios from "./axios";
-
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Link,
+  useNavigate,
+  Navigate
+} from "react-router-dom";
 const AutoComplete = ({ options = [""] }) => {
   const [value, setValue] = useState("");
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -69,7 +76,30 @@ const AutoComplete = ({ options = [""] }) => {
 /*********************************************/
 
 const [myData1, setmyData1] = useState([]);
-
+const timegetter=(p_date)=>{
+  // const date = new Date(p_date);
+const now = new Date(p_date);
+const nowTimezoneOffset = now.getTimezoneOffset();
+const givenOffset = -5.5 * 60*60; // Convert 5:30 hours to minutes
+// const givenOffset = 0; // Convert 5:30 hours to minutes
+const originalNowTime = new Date(now.getTime() + (nowTimezoneOffset * 60 * 1000) - (givenOffset * 1000));
+const options = {
+  hour: '2-digit',
+  minute: '2-digit',
+  second: '2-digit',
+  day: '2-digit',
+  month: '2-digit',
+  year: 'numeric',
+  hour12: true,
+  // timeZone: 'UTC'
+};
+const formattedDate = originalNowTime.toLocaleString('en-US', options);
+  return(
+    <>
+    {formattedDate}
+    </>
+  )
+}
 const handleSubmit2 = e => {
   e.preventDefault()
 
@@ -103,14 +133,7 @@ const handleSubmit2 = e => {
 
     {/* search for question for the multiple tags */}
 
-      {
-        myData1.map((index) => (
-          <div className='card'>
-          <div className="primary"> {index.post_title} </div>
-          <div className='col-sm-4'> </div>
-          </div>
-        ))
-      }
+    
 
          <datalist id="data">
                 {suggestions.map((suggestion)=>
@@ -133,6 +156,81 @@ const handleSubmit2 = e => {
           ))}
         </ul>
       )}
+      {myData1.map((post) => {
+        const { owner_display_name, last_editor_display_name, last_edit_date, is_accepted_answer, up_vote, down_vote, score, views, acc_ans_count, comment_count, post_title, content_license, body_text, creation_date, closed_date , answercount} = post;
+        return  <div className="card my-3">
+        <div className="card-body">
+          <div className='row'>
+            <div className='col-2'>
+              <div className='row mb-1'>
+               <div className='col'>
+                <small className="text-muted"><i className="fas fa-thumbs-up"></i> Likes</small>
+               </div> 
+               <div className='col'>
+                 {up_vote }
+               </div> 
+              </div>
+              <div className='row mb-1'>
+               <div className='col'>
+                <small className="text-muted"><i className="fas fa-thumbs-down"></i> dis</small>
+               </div> 
+               <div className='col'>
+               {down_vote }
+               </div> 
+              </div>
+              <div className='row mb-1'>
+               <div className='col'>
+                <small className="text-muted"><i className="fas fa-bullseye"></i> Score</small>
+               </div>
+               <div className='col'>
+               {score } 
+               </div>
+              </div>
+              <div className='row mb-1'>
+               <div className='col'>
+                <small className="text-muted"><i className="fas fa-eye"></i> Views</small>
+               </div>
+               <div className='col'>
+               {views }
+               </div>
+              </div>
+            </div>
+            <div className='col'style={{borderLeft: "6px solid orange"}}>
+              <h3><Link to="/homepage/quest" onClick={()=>{
+                localStorage.setItem("post_id",post.post_id)
+              }}>{post_title }</Link></h3>
+              <p>
+              {body_text }
+              </p>
+              <div className='row mb-1'>
+               <div className='col'>
+                <small className="text-muted">Answers</small> {answercount}
+               </div>
+               <div className='col text-end'>
+                <ul className="list-inline">
+                  <li className="list-inline-item">
+                    <i className="fas fa-user-clock "></i>
+                  </li>
+                  <li className="list-inline-item">
+                  <small className="text-muted">Posted by</small>
+                  </li>
+                  <li className="list-inline-item">
+                    <a href='#'>{owner_display_name}</a>
+                  </li>
+                  <li className="list-inline-item">
+                  <small className="text-muted">On</small>
+                  </li>
+                  <li className="list-inline-item">
+                    {timegetter(creation_date)}
+                  </li>
+                </ul>
+               </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      })}
     </div>
   );
 };
