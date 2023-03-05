@@ -23,7 +23,7 @@ function App() {
       <Route path="/homepage/add_quest" element={<Add_question/>}/>
       <Route path="/homepage/profile" element={<Profile/>}/>
       <Route path="/homepage/quest" element={<Quest_ans/>}/>
-      <Route path="/homepage/temp" element={<Sin_questans/>}/>
+      {/* <Route path="/homepage/temp" element={<Sin_questans/>}/> */}
       {/* These comments show how to routing using params dont delete them*/}
       {/* <Route path="/student" element={<Studentdash/>}/> */}
       {/* <Route path="/student/subtopic/:topicid/:subtopicid/:subtopicname" element={<Topic/>}/> */}

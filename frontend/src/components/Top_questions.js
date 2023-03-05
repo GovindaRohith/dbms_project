@@ -1,12 +1,12 @@
 import React from 'react';
-// import {
-//   BrowserRouter as Router,
-//   Routes,
-//   Route,
-//   Link,
-//   useNavigate,
-//   Navigate
-// } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Link,
+  useNavigate,
+  Navigate
+} from "react-router-dom";
 import { useEffect, useState } from "react";
 // import './App.css';
 import axios from "./axios";
@@ -56,7 +56,9 @@ import axios from "./axios";
           </div>
           <div className="col-sm-3">
             <div className="input-group">
-            <button type="button" className="btn btn-primary">Ask Question</button>
+            <Link type="button" to="/homepage/add_quest" className="btn btn-primary" onClick={()=>{
+              localStorage.setItem("key",null)
+            }}>Ask Question</Link>
             </div>
           </div>
         </div>
@@ -130,7 +132,9 @@ import axios from "./axios";
               </div>
             </div>
             <div className='col'style={{borderLeft: "6px solid orange"}}>
-              <h3><a>{post_title }</a></h3>
+              <h3><Link to="/homepage/quest" onClick={()=>{
+                localStorage.setItem("post_id",post.post_id)
+              }}>{post_title }</Link></h3>
               <p>
               {body_text }
               </p>

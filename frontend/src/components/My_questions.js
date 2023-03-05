@@ -1,12 +1,12 @@
 import React from 'react';
-// import {
-//   BrowserRouter as Router,
-//   Routes,
-//   Route,
-//   Link,
-//   useNavigate,
-//   Navigate
-// } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Link,
+  useNavigate,
+  Navigate
+} from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useCookies } from 'react-cookie';
 import Cookies from 'js-cookie';
@@ -142,7 +142,9 @@ import axios from "./axios";
               </div>
             </div>
             <div className='col'style={{borderLeft: "6px solid orange"}}>
-              <h3><a>{post_title }</a></h3>
+              <h3><Link to="/homepage/quest" onClick={()=>{
+                localStorage.setItem("post_id",post.post_id)
+              }}>{post_title }</Link></h3>
               <p>
               {body_text }
               </p>
